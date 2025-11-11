@@ -11,7 +11,7 @@
       margin: 0;
       padding: 0;
       height: 100%;
-      background-color: #000; /* optional – adjust background */
+      background-color: #000;
     }
 
     iframe {
@@ -21,19 +21,27 @@
       display: block;
     }
 
-    /* Safety: hide any injected headers (Framer Embed adds these sometimes) */
+    /* Default hide rule if header loads early */
     h1, .framer-embed h1 {
       display: none !important;
     }
   </style>
 </head>
 <body>
-  <!-- Framer Embed Clean Version -->
   <iframe 
-    src="https://void.framer.photos/about" 
+    src="https://void.framer.photos/" 
     title=""
     allowfullscreen
     loading="lazy">
   </iframe>
+
+  <script>
+    // Remove Framer header if injected later
+    const observer = new MutationObserver(() => {
+      const framerHeader = document.querySelector('h1, .framer-embed h1');
+      if (framerHeader) framerHeader.remove();
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  </script>
 </body>
 </html>
